@@ -1,0 +1,66 @@
+# Secrets
+.env
+.env.local
+*.key
+
+# Local MCP server config (machine-specific paths to ~/.gmail-mcp; do not commit to the public repo)
+.mcp.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.python-version
+
+# uv
+.uv-cache/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Office lock/temp files (created while a .pptx/.docx/.xlsx is open)
+~$*
+
+# Project data (raw transcripts stay in EA, not here)
+data/
+*.db
+*.sqlite
+
+# Corpus PDFs — reproducible via scripts/download_corpus.py (manifest.json is tracked)
+knowledge_base/*.pdf
+
+# RAG vector index (rebuilt from knowledge_base/ via embedder.py)
+faiss_index/
+*.faiss
+
+# GCP / service-account credentials — never commit (ADC lives in the user dir)
+*-key.json
+*credentials*.json
+service-account*.json
+
+# Observability traces (per-run JSONL, regenerated each run)
+logs/
+
+# Eval outputs
+eval_results.json
+eval_results.csv
+eval/*.log
+eval/_*.log
+
+# Transient deploy logs
+deployment/_*.log
+
+# Node deps for the deck builder (docs/deck) — package.json + lock are tracked for reproducible builds
+node_modules/
+
+# Playwright MCP scratch output (browser snapshots/screenshots/console logs)
+.playwright-mcp/
