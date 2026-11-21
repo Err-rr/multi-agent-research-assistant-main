@@ -237,13 +237,18 @@ it only POSTs to the API via its `API_URL` env var.
 # API — deploy to Cloud Run (built in-cloud via Cloud Build)
 gcloud run deploy research-assistant --source . --region us-central1 \
   --allow-unauthenticated --memory 1Gi \
-  --set-env-vars GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=<id>,GOOGLE_CLOUD_LOCATION=us-central1,TAVILY_API_KEY=<key>
+  --set-env-vars GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=<id>,GOOGLE_CLOUD_LOCATION=us-central1,TAVILY_API_KEY=<key>,API_KEY=<shared-secret>
 
 # Demo UI — separate lean service that points at the API
 gcloud run deploy research-assistant-ui --source ui --region us-central1 \
   --allow-unauthenticated --memory 512Mi \
-  --set-env-vars API_URL=https://research-assistant-969189630215.us-central1.run.app
+  --set-env-vars API_URL=https://research-assistant-969189630215.us-central1.run.app,API_KEY=<shared-secret>
 ```
+
+**Cost guards on `/ask`:** when `API_KEY` is set, callers must send a matching
+`X-API-Key` header (the UI does this), so the API can't be called directly to spend
+Gemini/Tavily credit. Questions are capped at 1,000 characters, and `/ask` is limited
+to `RATE_LIMIT_PER_MIN` calls per minute per instance (default 10).
 
 ---
 
