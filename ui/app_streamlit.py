@@ -15,6 +15,7 @@ import requests
 import streamlit as st
 
 API_URL = os.getenv("API_URL", "http://localhost:8080").rstrip("/")
+API_KEY = os.getenv("API_KEY", "")  # must match the API's API_KEY; sent as X-API-Key
 REQUEST_TIMEOUT_S = 240  # matches the API's worst-case multi-agent latency (incl. cold start)
 
 st.set_page_config(page_title="Research Assistant")
@@ -78,6 +79,7 @@ if prompt and prompt.strip():
                 resp = requests.post(
                     f"{API_URL}/ask",
                     json={"question": prompt},
+                    headers={"X-API-Key": API_KEY} if API_KEY else {},
                     timeout=REQUEST_TIMEOUT_S,
                 )
                 resp.raise_for_status()
